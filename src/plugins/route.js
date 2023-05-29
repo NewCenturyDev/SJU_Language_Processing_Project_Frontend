@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router';
 
 // 1. Define route components.
-import HomeView from '@/components/HomeView';
+import HomeView from '@/components/main/HomeView';
 
 
 // 2. Define some routes
