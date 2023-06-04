@@ -11,6 +11,7 @@
         <h3 class="mb-2">제목: {{store['music']['title']}}</h3>
         <h3 class="mb-3">작곡/작사: {{store['music']['author']}} / 아티스트: {{store['music']['artist']}}</h3>
         <audio-player
+            ref="audio"
             :show-prev-button="false"
             :show-next-button="false"
             :audio-list="[api.SERVER_URL + store['music']['fileURL']]"
@@ -28,12 +29,19 @@
 
 <script setup>
 import {useClassifyStore} from "@/stores/classify/classifyStore";
-import {defineEmits} from "vue";
+import {defineEmits, onMounted, ref, nextTick} from "vue";
 import AudioPlayer from '@liripeng/vue-audio-player';
 import api from '@/components/common/utils/httpUtil';
 
 const store = useClassifyStore();
 const emit = defineEmits(['reset']);
+const audio = ref(null);
+
+onMounted(() => {
+  nextTick(() => {
+    audio.value.play();
+  });
+});
 
 const title = {
   'POSITIVE': '좋은',
