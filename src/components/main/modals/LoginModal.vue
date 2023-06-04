@@ -63,6 +63,7 @@ async function reqLogin() {
     store['profile'] = response.data['profile'];
     store['loggedIn'] = true;
     emit('finished');
+    close();
   } catch (error) {
     if (error.name === 'AxiosError') {
       input.errMsg = error.response.status === 400 ?

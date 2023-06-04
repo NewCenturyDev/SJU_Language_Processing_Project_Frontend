@@ -1,14 +1,22 @@
 <template>
   <v-card class="sentence_input_card" elevation="3">
     <v-card-title class="sentence_input_card_title">
-      오늘은 기분이 {{ title[result] }} 하루군요!
+      오늘은 기분이 {{ title[store['category']] }} 하루군요!
     </v-card-title>
     <v-card-subtitle>
-      {{ subtitle[result] }}
+      {{ subtitle[store['category']] }}
     </v-card-subtitle>
     <v-card-text>
       <div class="music_player">
-        뮤직 플레이어 (예정)
+        <h3 class="mb-2">제목: {{store['music']['title']}}</h3>
+        <h3 class="mb-3">작곡/작사: {{store['music']['author']}} / 아티스트: {{store['music']['artist']}}</h3>
+        <audio-player
+            ref="audioPlayer"
+            :show-prev-button="false"
+            :show-next-button="false"
+            :audio-list="[api.SERVER_URL + store['music']['fileURL']]"
+            theme-color="#ff2929"
+        />
       </div>
     </v-card-text>
     <v-card-actions>
@@ -20,13 +28,13 @@
 </template>
 
 <script setup>
-import {useCredentialStore} from "@/stores/credential/credentialStore";
-import {ref, defineEmits} from "vue";
+import {useClassifyStore} from "@/stores/classify/classifyStore";
+import {defineEmits} from "vue";
+import AudioPlayer from '@liripeng/vue-audio-player';
+import api from '@/components/common/utils/httpUtil';
 
-const store = useCredentialStore();
-const emit = defineEmits(['classify'])
-const result = ref('NEGATIVE');
-
+const store = useClassifyStore();
+const emit = defineEmits(['reset']);
 
 const title = {
   'POSITIVE': '좋은',
@@ -61,10 +69,7 @@ async function reset() {
   margin: 0 auto;
 }
 .music_player {
-  width: 600px;
-  max-width: 600px;
-  height: 200px;
+  max-width: 650px;
   margin: 20px auto;
-  background-color: #bbbbbb;
 }
 </style>

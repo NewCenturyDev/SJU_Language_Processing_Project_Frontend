@@ -25,40 +25,44 @@
 
 <script setup>
 import {useCredentialStore} from "@/stores/credential/credentialStore";
+import {useClassifyStore} from "@/stores/classify/classifyStore";
 import {reactive, defineEmits} from "vue";
 import axios from 'axios';
 import api from '@/components/common/utils/httpUtil';
 
-const store = useCredentialStore();
-const emit = defineEmits(['classify'])
+const credential = useCredentialStore();
+const store = useClassifyStore();
+const emit = defineEmits(['classify']);
 const input = reactive({
   sentence: '',
   errMsg: '',
 });
 
 async function reqClassification() {
-  emit('classify')
-  // if (store[''])
-  // try {
-  //   const response = await axios.post(`${api.SERVER_URL}/users/auths/login`, {
-  //     email: input.email,
-  //     password: input.password,
-  //   });
-  //   if (response.data['profile']['verified']) {
-  //     store['token'] = `Bearer ${response.data['token']}`;
-  //     store['profile'] = response.data['profile'];
-  //     await router.push('/places');
-  //   } else {
-  //     alert('로그인을 해주세요!');
-  //   }
-  // } catch (error) {
-  //   if (error.name === 'AxiosError') {
-  //     input.errMsg = error.response.status === 400 ?
-  //         "이메일 또는 비밀번호가 잘못되었습니다" : input.errMsg = error.message;
-  //   } else {
-  //     console.log(error);
-  //   }
-  // }
+  if (credential['loggedIn']) {
+    try {
+      const response = await axios.post(`${api.SERVER_URL}/sentences`, {
+        text: input.sentence,
+      }, {
+        headers: {Authorization: credential['token']}
+      });
+
+      store['music'] = response.data['createdInput']['music'];
+      store['category'] = response.data['createdInput']['category'];
+      store['text'] = response.data['createdInput']['text'];
+      store['timestamp'] = response.data['createdInput']['timestamp'];
+
+      emit('classify');
+    } catch (error) {
+      if (error.name === 'AxiosError') {
+        input.errMsg = error.message;
+      } else {
+        console.log(error);
+      }
+    }
+  } else {
+    alert('로그인이 필요합니다!');
+  }
 }
 </script>
 
