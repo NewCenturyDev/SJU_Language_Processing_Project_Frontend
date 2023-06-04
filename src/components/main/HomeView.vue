@@ -23,7 +23,7 @@
         </div>
       </v-carousel>
 
-      <sentence-result-component v-if="cardMode === 'result'"
+      <sentence-result-component v-if="store['mode'] === 'result'"
           @reset="changeCardMode('stand-by')"
       ></sentence-result-component>
       <sentence-input-component v-else
@@ -44,8 +44,10 @@ import {ref} from 'vue';
 import SentenceInputComponent from "@/components/main/components/SentenceInputComponent";
 import SentenceResultComponent from "@/components/main/components/SentenceResultComponent";
 import LoginModal from "@/components/main/modals/LoginModal";
+import {useClassifyStore} from "@/stores/classify/classifyStore";
 
-const cardMode = ref('stand_by');
+
+const store = useClassifyStore();
 const loginModalIsOpen = ref(false);
 
 function toggleLoginModal(status) {
@@ -56,8 +58,8 @@ function openLoginModal() {
 }
 
 function changeCardMode(mode) {
-  cardMode.value = mode;
-  console.log(cardMode.value)
+  store['mode'] = mode;
+  console.log(store['mode'].value);
 }
 
 </script>

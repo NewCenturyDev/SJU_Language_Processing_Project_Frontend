@@ -7,8 +7,9 @@ export const useClassifyStore = defineStore('classify', () => {
     const timestamp = ref(null);
     const category = ref(null);
     const text = ref(null);
+    const mode = ref('stand_by');
 
-    return {music, timestamp, category, text};
+    return {music, timestamp, category, text, mode};
 }, {
     persist: {
         paths: ['music', 'timestamp', 'category', 'text'],

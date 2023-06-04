@@ -11,11 +11,10 @@
         <h3 class="mb-2">제목: {{store['music']['title']}}</h3>
         <h3 class="mb-3">작곡/작사: {{store['music']['author']}} / 아티스트: {{store['music']['artist']}}</h3>
         <audio-player
-            ref="audioPlayer"
             :show-prev-button="false"
             :show-next-button="false"
             :audio-list="[api.SERVER_URL + store['music']['fileURL']]"
-            theme-color="#ff2929"
+            theme-color="#7289DA"
         />
       </div>
     </v-card-text>
