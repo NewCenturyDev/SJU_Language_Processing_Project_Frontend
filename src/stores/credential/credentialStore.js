@@ -3,20 +3,7 @@ import {ref} from "vue";
 
 export const useCredentialStore = defineStore('credential', () => {
     /* State */
-    const profile = ref({
-        id: null,
-        email: null,
-        language: null,
-        username: null,
-        country: null,
-        birth: null,
-        gender: null,
-        phone: null,
-        permissions: [],
-        verified: null,
-        active: null,
-        credentialsNonExpired: null
-    });
+    const profile = ref(null);
     const token = ref(null);
     const loggedIn = ref(false);
 

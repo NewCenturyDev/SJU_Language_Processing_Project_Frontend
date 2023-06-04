@@ -1,6 +1,8 @@
 <template>
   <v-layout>
-    <header-fragment></header-fragment>
+    <header-fragment
+        @login="openLoginModal"
+    ></header-fragment>
     <v-main>
       <v-carousel class="carousel" :show-arrows="false" :hide-delimiters="true" :cycle="true" :interval="3000">
         <v-carousel-item
@@ -27,6 +29,11 @@
       <sentence-input-component v-else
           @classify="changeCardMode('result')"
       ></sentence-input-component>
+
+      <login-modal
+          :open="loginModalIsOpen"
+          @input="toggleLoginModal"
+      ></login-modal>
     </v-main>
   </v-layout>
 </template>
@@ -36,8 +43,17 @@ import HeaderFragment from '@/components/common/components/HeaderFragment';
 import {ref} from 'vue';
 import SentenceInputComponent from "@/components/main/components/SentenceInputComponent";
 import SentenceResultComponent from "@/components/main/components/SentenceResultComponent";
+import LoginModal from "@/components/main/modals/LoginModal";
 
 const cardMode = ref('stand_by');
+const loginModalIsOpen = ref(false);
+
+function toggleLoginModal(status) {
+  loginModalIsOpen.value = status ? status : false;
+}
+function openLoginModal() {
+  loginModalIsOpen.value = true;
+}
 
 function changeCardMode(mode) {
   cardMode.value = mode;
