@@ -2,7 +2,7 @@
   <nav-bar-component>
     <template v-slot:buttons>
       <v-btn @click="gotoAdminConsole" v-if="isAdmin">관리자</v-btn>
-      <v-btn @click="doLogout" v-if="store['loggedIn']">로그아웃</v-btn>
+      <v-btn @click="doLogout" v-if="isLoggedIn">로그아웃</v-btn>
       <v-btn @click="openLoginModal" v-else>로그인</v-btn>
     </template>
   </nav-bar-component>
@@ -18,12 +18,16 @@ import router from "@/plugins/route";
 const store = useCredentialStore();
 const emit = defineEmits(['login']);
 const isAdmin = ref(null);
+const isLoggedIn = ref(store['loggedIn']);
 
 onBeforeMount(checkIsAdmin);
 
 watch(() => store['profile'], () => {
   checkIsAdmin();
 });
+watch(() => store['loggedIn'], value => {
+  checkLoggedIn(value);
+})
 
 function openLoginModal() {
   emit('login');
@@ -35,14 +39,18 @@ function gotoAdminConsole() {
 
 function doLogout() {
   storeUtil.resetForLogout();
+  emit('logout');
 }
 
 function checkIsAdmin() {
-  if (store['profile']) {
+  if (store['profile'] && location.hash === '#/') {
     isAdmin.value = store['profile']['permissions'][0].includes('ADMIN');
   } else {
     isAdmin.value = false;
   }
+}
+function checkLoggedIn(value) {
+  isLoggedIn.value = value;
 }
 
 </script>

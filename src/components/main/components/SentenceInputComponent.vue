@@ -7,10 +7,12 @@
       NLP AI 엔진이 당신의 기분에 맞춘 음악을 들려드려요.
     </v-card-subtitle>
     <v-card-text>
-      <v-text-field class="sentence_input_text_field" label="문장 입력" placeholder="오늘의 기분을 입력하세요..!"
+      <v-text-field class="sentence_input_text_field" label="문장 입력" placeholder="오늘의 기분을 입력하세요..! (영문 전용 / English Sentence Only)"
                     variant="outlined"
-                    hint="영문 또는 한글 문장만 가능합니다 (언어 자동 감지 / 한영 혼용 불가)"
+                    :hint="input.hint"
+                    :messages="input.message"
                     :error-messages="input.errMsg"
+                    @keyup.enter="reqClassification"
                     @update:modelValue="(sentence) => input.sentence = sentence"
       >
       </v-text-field>
@@ -35,11 +37,14 @@ const store = useClassifyStore();
 const emit = defineEmits(['classify']);
 const input = reactive({
   sentence: '',
+  hint: '영문 문장만 가능합니다 (향후 한국어 추가 지원 예정)',
   errMsg: '',
 });
 
 async function reqClassification() {
+  input.errMsg = '';
   if (credential['loggedIn']) {
+    input.hint = '문장을 분석하고 있습니다. 잠시만 기다려주세요..! (Please wait a moment.)'
     try {
       const response = await axios.post(`${api.SERVER_URL}/sentences`, {
         text: input.sentence,
@@ -55,10 +60,16 @@ async function reqClassification() {
       emit('classify');
     } catch (error) {
       if (error.name === 'AxiosError') {
-        input.errMsg = error.message;
+        if (error.response.data['_metadata']) {
+          input.errMsg = '에러: ' + error.response.data['_metadata']['message'];
+        } else {
+          input.errMsg = '에러: ' + error.message;
+        }
       } else {
         console.log(error);
       }
+    } finally {
+      input.hint = '영문 문장만 가능합니다 (향후 한국어 추가 지원 예정)';
     }
   } else {
     alert('로그인이 필요합니다!');

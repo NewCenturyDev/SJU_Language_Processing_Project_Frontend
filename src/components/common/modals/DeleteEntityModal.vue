@@ -10,12 +10,11 @@
         <h5>{{entityName}} 정보를 삭제하시겠습니까?</h5>
       </v-row>
       <v-row>
-        <h5>대상 {{entityName}}: {{props.entity['name']}}</h5>
+        <h5>대상 {{entityName}}: {{props.entity['text']}}</h5>
       </v-row>
       <v-row>
         <p class="delete_msg">
           {{ entityName }} 삭제시 관련한 모든 정보가 삭제됩니다.<br/>
-          여기에는 {{ entityName }} 기본 정보, {{ entityName }} 상세 정보(원본 및 모든 언어의 번역본), {{ entityName }} 이미지 등이 포함됩니다.<br/>
         </p>
       </v-row>
       <v-row>

@@ -2,11 +2,6 @@
   <v-app-bar
       :color="'#FFFFFF'"
       :elevation="2">
-    <v-app-bar-nav-icon
-        v-if="isVisible"
-        @click="$emit('navbarTriggerBtn')">
-      <v-icon icon="mdi-menu"></v-icon>
-    </v-app-bar-nav-icon>
     <v-app-bar-title
         class="title"
         :text="'NLP AI Music Player'">
@@ -17,15 +12,6 @@
 </template>
 
 <script setup>
-import {defineEmits, ref, watch} from "vue";
-
-defineEmits(['navbarTriggerBtn']);
-let isVisible = ref(location.hash !== '#/');
-
-watch(() => location.hash, () => {
-  isVisible.value = location.hash !== '#/';
-});
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -2,12 +2,13 @@ import { createRouter, createWebHashHistory } from 'vue-router';
 
 // 1. Define route components.
 import HomeView from '@/components/main/HomeView';
+import ConsoleView from '@/components/console/ConsoleView';
 
 
 // 2. Define some routes
 const routes = [
     { name: '/', path: '/', component: HomeView},
-    // { name: '/admin', path: '/admin', component: AdminView, props: true},
+    { name: '/console', path: '/console', component: ConsoleView, props: true},
 ];
 
 const router = createRouter({
