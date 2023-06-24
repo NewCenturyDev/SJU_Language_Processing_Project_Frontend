@@ -12,7 +12,7 @@
           <v-tab value="train">학습데이터 관리</v-tab>
         </v-tabs>
       </v-banner>
-      <v-window v-model="currentTab">
+      <v-window v-model="currentTab" class="tab_window">
         <v-window-item value="user_input">
           <user-input-manage-component></user-input-manage-component>
         </v-window-item>
@@ -70,5 +70,8 @@ function gotoMain() {
 }
 .home_btn {
   height: 48px !important;
+}
+.tab_window {
+  padding: 0 25px;
 }
 </style>

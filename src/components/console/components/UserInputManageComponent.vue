@@ -98,7 +98,7 @@
           <td>{{ sentence['userId'] }}</td>
           <td>{{ parseMusic(sentence['music']) }}</td>
           <td>
-            <v-btn @click="() => addToTrainData(sentence)" variant="outlined" color="secondary">추가</v-btn>
+            <v-btn @click="() => openTransferModal(sentence)" variant="outlined" color="secondary">추가</v-btn>
           </td>
           <td>
             <v-btn @click="() => openDeleteModal(sentence)" variant="outlined" color="error">삭제</v-btn>
@@ -109,6 +109,12 @@
       <v-pagination v-model="pageIdx" :length="totalPage"></v-pagination>
     </v-card-text>
   </v-card>
+  <transfer-sentence-modal
+      :open="transferModalIsOpen"
+      :entity="transferTargetSentence"
+      @input="toggleTransferModal"
+      @finished="reqInputSentences"
+  ></transfer-sentence-modal>
   <delete-entity-modal
       :open="deleteModalIsOpen"
       :entity="deleteTargetSentence"
@@ -126,6 +132,7 @@ import axios from 'axios';
 import api from "@/components/common/utils/httpUtil";
 import {useCredentialStore} from '@/stores/credential/credentialStore';
 import DeleteEntityModal from "@/components/common/modals/DeleteEntityModal";
+import TransferSentenceModal from "@/components/console/modals/TransferSentenceModal";
 
 
 onBeforeMount(reqInputSentences);
@@ -139,6 +146,8 @@ const fetchTimeFrom = ref('');
 const fetchTimeTo = ref('');
 const deleteModalIsOpen = ref(false);
 const deleteTargetSentence = ref(null);
+const transferModalIsOpen = ref(false);
+const transferTargetSentence = ref(null);
 const pageIdx = ref(1);
 const totalPage = ref(0);
 const sentences = ref([]);
@@ -186,6 +195,13 @@ function openDeleteModal(sentence) {
   deleteTargetSentence.value = sentence;
   toggleDeleteModal(true);
 }
+function toggleTransferModal(status) {
+  transferModalIsOpen.value = status ? status : false;
+}
+function openTransferModal(sentence) {
+  transferTargetSentence.value = sentence;
+  toggleTransferModal(true);
+}
 function parseCategory(category) {
   switch (category) {
     case 'POSITIVE': return `긍정적 (${category})`;
@@ -207,7 +223,8 @@ function parseMusic(music) {
   margin-right: 10px;
 }
 .input_sentence_card {
-  margin: 25px;
+  margin: 25px auto;
+  max-width: 1500px;
 }
 .input_sentence_card_body {
   overflow-x: scroll;
@@ -224,6 +241,9 @@ function parseMusic(music) {
   width: 150px;
   padding-left: 5px;
   padding-right: 5px;
+}
+.train_sentence_table td:nth-child(5), .train_sentence_table th:nth-child(5) {
+  min-width: 180px;
 }
 .input_sentence_table td:nth-child(4), .input_sentence_table th:nth-child(3) {
   width: 150px;

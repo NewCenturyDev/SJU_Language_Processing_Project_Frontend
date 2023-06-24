@@ -1,6 +1,6 @@
 <template>
   <common-modal
-      :title="`${props.title} 수정`"
+      :title="`${props.title} 등록`"
       :width="700"
       :open="isOpen"
       @input="close"
@@ -10,11 +10,12 @@
     </template>
     <template v-slot:buttons>
       <v-spacer></v-spacer>
-      <v-btn @click="save" variant="text" color="secondary">저장</v-btn>
+      <v-btn @click="save" variant="text" color="green">등록</v-btn>
       <v-btn @click="close" variant="text">취소</v-btn>
     </template>
   </common-modal>
 </template>
+
 <script setup>
 import {defineProps, defineEmits, ref, toRaw, watch} from "vue";
 import axios from 'axios';
@@ -23,34 +24,36 @@ import CommonModal from "@/components/common/modals/CommonModal";
 import {useCredentialStore} from "@/stores/credential/credentialStore";
 
 const emit = defineEmits(['input', 'finished', 'check']);
-const props = defineProps({open: Boolean, entity: Object, title: String, endpoint: String});
+const props = defineProps({open: Boolean, title: String, endpoint: String});
 const store = useCredentialStore();
 const entityDTO = ref(null);
 let isOpen = ref(props.open);
 
+watch(() => props.open, () => {
+    isOpen.value = props.open;
+});
 
-watch(() => props.open, () => {isOpen.value = props.open;});
-
-function setEntityDTO(commonEntity) {
-    entityDTO.value = commonEntity;
+function setEntityDTO(dto) {
+    entityDTO.value = dto;
 }
 
 async function save() {
-    await emit('check', async () => {await reqUpdateEntity()});
+    await emit('check', async () => {await reqCreateEntity()});
 }
 
-async function reqUpdateEntity() {
-    entityDTO.value['id'] = props.entity['id'];
+async function reqCreateEntity() {
     console.log(toRaw(entityDTO.value));
     try {
-        await axios.put(`${api.SERVER_URL}${props.endpoint}`, toRaw(entityDTO.value), {
+        await axios.post(`${api.SERVER_URL}${props.endpoint}`, toRaw(entityDTO.value), {
             headers: {Authorization: store['token']}
         });
         emit('finished');
-        alert(`${props.title} 업데이트가 완료되었습니다.`);
+        alert(`${props.title} 신규 등록이 완료되었습니다.`);
         close();
     } catch (error) {
-        api.handleHttpError(error);
+        api.handleHttpError(error, null, (msg) => {
+            alert(msg);
+        });
     }
 }
 
@@ -60,3 +63,7 @@ function close() {
 }
 
 </script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+</style>
