@@ -237,7 +237,7 @@ function parseLanguage(language) {
   padding-left: 5px;
   padding-right: 5px;
 }
-.train_sentence_table td:nth-child(4), .train_sentence_table th:nth-child(5) {
+.train_sentence_table td:nth-child(4), .train_sentence_table th:nth-child(4) {
   width: 50px;
   padding-left: 5px;
   padding-right: 5px;

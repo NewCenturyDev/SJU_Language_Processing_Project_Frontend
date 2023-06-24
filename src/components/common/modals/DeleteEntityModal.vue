@@ -10,7 +10,8 @@
         <h5>{{entityName}} 정보를 삭제하시겠습니까?</h5>
       </v-row>
       <v-row>
-        <h5>대상 {{entityName}}: {{props.entity['text']}}</h5>
+        <h5 v-if="entityName.includes('sentence')">대상 {{entityName}}: {{props.entity['text']}}</h5>
+        <h5 v-else>대상 {{entityName}}: {{props.entity['title']}}</h5>
       </v-row>
       <v-row>
         <p class="delete_msg">

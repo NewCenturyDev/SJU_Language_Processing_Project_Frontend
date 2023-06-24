@@ -242,10 +242,10 @@ function parseMusic(music) {
   padding-left: 5px;
   padding-right: 5px;
 }
-.train_sentence_table td:nth-child(5), .train_sentence_table th:nth-child(5) {
+.train_sentence_table td:nth-child(3), .train_sentence_table th:nth-child(3) {
   min-width: 180px;
 }
-.input_sentence_table td:nth-child(4), .input_sentence_table th:nth-child(3) {
+.input_sentence_table td:nth-child(4), .input_sentence_table th:nth-child(4) {
   width: 150px;
   padding-left: 5px;
   padding-right: 5px;
