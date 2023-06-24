@@ -2,7 +2,7 @@ import router from '@/plugins/route';
 import storeUtil from "@/stores/utils";
 
 export default {
-    SERVER_URL: 'http://localhost:3000',
+    SERVER_URL: 'http://sju-nlp-api.newcentury99.com',
     handleHttpError: function (error, onAuthErr, onApiErr) {
         if (error.name === 'AxiosError' && error.response.data['_metadata']
             && error.response.status === 401
